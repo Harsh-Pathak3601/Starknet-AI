@@ -10,6 +10,9 @@
 User Task
     │
     ▼
+🏹  Hawkeye          → Scrapes latest docs via Playwright
+    │
+    ▼
 🕶️  Nick Fury        → Breaks task into mission steps
     │
     ▼
@@ -41,6 +44,7 @@ Each agent is a **separate module** that makes its own independent call to the *
 starknet-ai/
 │
 ├── agents/
+│   ├── hawkeye.js         ← Web scout & research agent (Playwright)
 │   ├── nickFury.js        ← Mission planner / orchestrator agent
 │   ├── ironMan.js         ← Architecture & system design agent
 │   ├── hulk.js            ← Code implementation agent
@@ -111,8 +115,8 @@ Once running, you'll see the STARKNET AI banner. Enter any task:
 ```
 
 The system will:
-1. Display real-time spinner for each agent step
-2. Print all 6 agent outputs to the console
+1. Display real-time spinner for each agent step (now 7 steps!)
+2. Print all 7 agent outputs to the console
 3. Optionally save a full `.md` report to the `output/` folder
 
 ---
@@ -135,7 +139,8 @@ The system will:
 |-------------------------|--------------------------------------------------|
 | `core/groqClient.js`    | Single reusable function for all Groq API calls  |
 | `core/memory.js`        | Shared memory store (append / read / buildContext) |
-| `core/orchestrator.js`  | Chains all 6 agents; manages data flow           |
+| `core/orchestrator.js`  | Chains all agents; manages data flow             |
+| `agents/hawkeye.js`     | Web scout, researches latest API docs using Playwright |
 | `agents/nickFury.js`    | Mission breakdown & step assignment              |
 | `agents/ironMan.js`     | Technical architecture & module design           |
 | `agents/hulk.js`        | Full implementation code generation              |
@@ -157,7 +162,7 @@ output/
 └── mission-2026-04-21T12-00-00-000Z.md
 ```
 
-Each report contains the structured output of all 6 agents, timestamped and labelled.
+Each report contains the structured output of all 7 agents, timestamped and labelled.
 
 ---
 
@@ -166,6 +171,7 @@ Each report contains the structured output of all 6 agents, timestamped and labe
 - **ES Modules (`"type": "module"`)** — modern, clean import/export syntax
 - **Separate modules per agent** — strict separation of concerns; no merged logic
 - **Shared memory via `memory.js`** — agents accumulate context without monolithic state
+- **Playwright Integration** — allows the scout agent to read up-to-date docs during runs
 - **Groq LLaMA 3.3 70B** — fast inference, high quality, cost-effective
 - **`ora` + `chalk`** — production-quality CLI UX with live spinners and colour
 

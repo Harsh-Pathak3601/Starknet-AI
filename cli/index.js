@@ -40,6 +40,7 @@ function printBanner() {
 // ─── Agent label helper ───────────────────────────────────────────────────────
 
 const AGENT_STYLES = {
+  "Hawkeye": { emoji: "🏹", color: chalk.bold.cyan },
   "Nick Fury": { emoji: "🕶️", color: chalk.bold.red },
   "Iron Man": { emoji: "🦾", color: chalk.bold.yellow },
   "Hulk": { emoji: "💪", color: chalk.bold.green },
@@ -129,11 +130,12 @@ async function main() {
     try {
       startTime = Date.now();
 
-      const results = await runMission(task.trim(), (stepIndex, agentName, emoji) => {
+      const results = await runMission(task.trim(), (stepIndex, agentName, emoji, msg) => {
         spinner.stop();
+        const actionText = msg ? msg : "is working...";
         spinner.start(
-          chalk.dim(`  [${stepIndex}/6] `) +
-          chalk.bold(`${emoji}  ${agentName} is working...`)
+          chalk.dim(`  [${stepIndex + 1}/7] `) +
+          chalk.bold(`${emoji}  ${agentName} ${actionText}`)
         );
       });
 

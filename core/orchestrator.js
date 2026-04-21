@@ -5,6 +5,7 @@
  */
 
 import * as memory     from "./memory.js";
+import * as hawkeye    from "../agents/hawkeye.js";
 import * as nickFury   from "../agents/nickFury.js";
 import * as ironMan    from "../agents/ironMan.js";
 import * as hulk       from "../agents/hulk.js";
@@ -43,6 +44,7 @@ async function extractAndSaveFiles(output, baseDir = "generated-workspace") {
  * runMission — executes the full multi-agent pipeline for a given task.
  *
  * Steps:
+ *  0. Hawkeye       → web research / intel
  *  1. Nick Fury     → mission briefing / breakdown
  *  2. Iron Man      → architecture blueprint
  *  3. Hulk          → implementation code
@@ -62,6 +64,16 @@ export async function runMission(userTask, onStep = () => {}) {
   const results = {};
   const slug = userTask.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 40) || 'workspace';
   const workspaceFolder = `output/${slug}-code`;
+
+  // ─────────────────────────────────────────────────────────
+  // STEP 0 — Hawkeye: Web Research
+  // ─────────────────────────────────────────────────────────
+  onStep(0, "Hawkeye", ICONS.HAWKEYE);
+  const intelReport = await hawkeye.run(userTask, (msg) => {
+    onStep(0, "Hawkeye", ICONS.HAWKEYE, msg);
+  });
+  memory.append("Hawkeye", intelReport);
+  results["Hawkeye"] = intelReport;
 
   // ─────────────────────────────────────────────────────────
   // STEP 1 — Nick Fury: Mission Briefing

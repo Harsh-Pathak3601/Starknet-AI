@@ -1,5 +1,6 @@
 export const ICONS = {
   NICK_FURY: '\ud83d\udd76\ufe0f', // 🕶️
+  HAWKEYE: '🏹', // 🏹
   IRON_MAN: '\ud83e\uddbe', // 🦾
   HULK: '\ud83d\udcaa', // 💪
   SPIDER_MAN: '\ud83d\udd77\ufe0f', // 🕷️
