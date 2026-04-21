@@ -19,10 +19,13 @@ User Task
 🦾  Iron Man         → Designs technical architecture
     │
     ▼
-💪  Hulk             → Writes implementation code
+💪  Hulk             → Writes implementation code ◄─────┐
+    │                                                 │
+    ▼                                                 │ (Auto-Healing)
+🤖  System Run       → Executes code & catches errors ──┘
     │
     ▼
-🕷️  Spider-Man       → Debugs & optimises the code
+🕷️  Spider-Man       → Debugs, fix errors & optimises
     │
     ▼
 🛡️  Captain America  → Tests & validates correctness
@@ -143,8 +146,8 @@ The system will:
 | `agents/hawkeye.js`     | Web scout, researches latest API docs using Playwright |
 | `agents/nickFury.js`    | Mission breakdown & step assignment              |
 | `agents/ironMan.js`     | Technical architecture & module design           |
-| `agents/hulk.js`        | Full implementation code generation              |
-| `agents/spiderMan.js`   | Bug detection, edge cases, optimisation          |
+| `agents/hulk.js`        | Implementation + **Execution Command Suggester**  |
+| `agents/spiderMan.js`   | **Auto-Healing**: Fixes stack traces from crashes |
 | `agents/captainAmerica.js` | Test case generation & PASS/FAIL verdicts     |
 | `agents/blackWidow.js`  | Final Markdown documentation                     |
 | `tools/runCommand.js`   | Shell command execution via `child_process`      |
@@ -172,6 +175,7 @@ Each report contains the structured output of all 7 agents, timestamped and labe
 - **Separate modules per agent** — strict separation of concerns; no merged logic
 - **Shared memory via `memory.js`** — agents accumulate context without monolithic state
 - **Playwright Integration** — allows the scout agent to read up-to-date docs during runs
+- **Auto-Healing Execution Loop** — captures runtime errors from `child_process` and feeds them back to agents for self-correction.
 - **Groq LLaMA 3.3 70B** — fast inference, high quality, cost-effective
 - **`ora` + `chalk`** — production-quality CLI UX with live spinners and colour
 
