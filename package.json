@@ -1,0 +1,28 @@
+{
+  "name": "starknet-ai",
+  "version": "1.0.0",
+  "description": "STARKNET AI — A production-ready multi-agent AI system powered by Groq API and Avengers-themed agents.",
+  "main": "cli/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node cli/index.js",
+    "dev": "node --watch cli/index.js"
+  },
+  "keywords": [
+    "multi-agent",
+    "ai",
+    "groq",
+    "cli",
+    "starknet"
+  ],
+  "author": "STARKNET AI",
+  "license": "MIT",
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.4.5",
+    "groq-sdk": "^0.3.3",
+    "inquirer": "^9.2.15",
+    "ora": "^8.0.1"
+  }
+}
