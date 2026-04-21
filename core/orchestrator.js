@@ -13,6 +13,7 @@ import * as spiderMan  from "../agents/spiderMan.js";
 import * as captainAmerica from "../agents/captainAmerica.js";
 import * as blackWidow from "../agents/blackWidow.js";
 import { writeFile }   from "../tools/fileSystem.js";
+import { runCommand }  from "../tools/runCommand.js";
 import path            from "path";
 import { ICONS }       from "./icons.js";
 
@@ -25,7 +26,16 @@ async function extractAndSaveFiles(output, baseDir = "generated-workspace") {
   let filesWritten = 0;
   while ((match = fileRegex.exec(output)) !== null) {
     const filename = match[1].trim();
-    const content = match[2].trim();
+    let content = match[2].trim();
+    
+    // Auto-remove markdown code block fences if the LLM wrapped the code in them
+    if (content.startsWith("```")) {
+      content = content.replace(/^```[a-zA-Z]*\n/, "");
+      if (content.endsWith("```")) {
+        content = content.substring(0, content.length - 3).trim();
+      }
+    }
+
     if (filename && content) {
       const filePath = path.join(baseDir, filename);
       await writeFile(filePath, content);
@@ -33,6 +43,14 @@ async function extractAndSaveFiles(output, baseDir = "generated-workspace") {
     }
   }
   return filesWritten;
+}
+
+/**
+ * Utility to extract execution command formatted as --- EXECUTION COMMAND --- \n <cmd> \n --- END COMMAND ---
+ */
+function extractExecutionCommand(output) {
+  const match = output.match(/--- EXECUTION COMMAND ---\n([\s\S]*?)--- END COMMAND ---/);
+  return match ? match[1].trim() : null;
 }
 
 /**
@@ -97,17 +115,45 @@ export async function runMission(userTask, onStep = () => {}) {
   onStep(3, "Hulk", ICONS.HULK);
   const implementation = await hulk.run(architecture, missionPlan, userTask);
   const filesCreated = await extractAndSaveFiles(implementation, workspaceFolder);
-  const hulkOutput = implementation + `\n\n[SYSTEM: Wrote ${filesCreated} files to ${workspaceFolder}]`;
+  
+  let executionError = null;
+  const commandToRun = extractExecutionCommand(implementation);
+  
+  if (commandToRun) {
+    onStep(3, "System", ICONS.ROBOT, `Executing: ${commandToRun}`);
+    const processResult = await runCommand(commandToRun, { cwd: workspaceFolder });
+    if (!processResult.success) {
+      executionError = processResult.stderr || processResult.stdout || "Unknown execution error";
+    }
+  }
+
+  let hulkOutput = implementation + `\n\n[SYSTEM: Wrote ${filesCreated} files to ${workspaceFolder}]`;
+  if (commandToRun) {
+     hulkOutput += `\n[SYSTEM: Executed '${commandToRun}'. Success: ${!executionError}]`;
+  }
+  
   memory.append("Hulk", hulkOutput);
   results["Hulk"] = hulkOutput;
 
   // ─────────────────────────────────────────────────────────
-  // STEP 4 — Spider-Man: Debug & Optimise
+  // STEP 4 — Spider-Man: Debug & Auto-Healing
   // ─────────────────────────────────────────────────────────
-  onStep(4, "Spider-Man", ICONS.SPIDER_MAN);
-  const debugReport = await spiderMan.run(implementation, architecture, userTask);
+  onStep(4, "Spider-Man", ICONS.SPIDER_MAN, executionError ? "Healing execution error..." : "Optimising...");
+  const debugReport = await spiderMan.run(implementation, architecture, userTask, executionError);
   const patchesApplied = await extractAndSaveFiles(debugReport, workspaceFolder);
-  const spiderOutput = debugReport + `\n\n[SYSTEM: Applied fixes to ${patchesApplied} files in ${workspaceFolder}]`;
+  
+  let finalStatus = "No second execution attempted.";
+  if (executionError && commandToRun) {
+    onStep(4, "System", ICONS.ROBOT, `Re-Executing: ${commandToRun}`);
+    const retryResult = await runCommand(commandToRun, { cwd: workspaceFolder });
+    if (!retryResult.success) {
+      finalStatus = `Second run failed: ${retryResult.stderr.substring(0, 100)}...`;
+    } else {
+      finalStatus = `Second run SUCCESSFUL. Auto-Healing complete!`;
+    }
+  }
+
+  const spiderOutput = debugReport + `\n\n[SYSTEM: Applied fixes to ${patchesApplied} files in ${workspaceFolder}]\n[SYSTEM: ${finalStatus}]`;
   memory.append("Spider-Man", spiderOutput);
   results["Spider-Man"] = spiderOutput;
 

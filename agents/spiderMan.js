@@ -13,7 +13,8 @@ You are Peter Parker — Spider-Man. Your spider-sense catches every bug.
 
 Your responsibilities:
 1. Review the code written by Hulk (Bruce Banner).
-2. Identify:
+2. If given an EXECUTION ERROR (Stack Trace), your #1 priority is to fix that exact error.
+3. Identify:
    - Bugs and logical errors
    - Unhandled edge cases
    - Security vulnerabilities
@@ -49,7 +50,12 @@ Summary:
  * @param {string} originalTask   - The original user task.
  * @returns {Promise<string>} - Bug report and patches.
  */
-export async function run(implementation, architecture, originalTask) {
+export async function run(implementation, architecture, originalTask, executionError = null) {
+  let errorMessage = "";
+  if (executionError) {
+    errorMessage = `\n\nCRITICAL EXECUTION ERROR WHEN RUNNING CODE:\n${executionError}\n\nFIX THIS ERROR FIRST.\n`;
+  }
+
   const message = `
 Original Task:
 ${originalTask}
@@ -58,7 +64,7 @@ Architecture Design (Iron Man):
 ${architecture}
 
 Implementation Code (Hulk):
-${implementation}
+${implementation}${errorMessage}
 
 Now review the code, find bugs, and provide fixes.
 `.trim();

@@ -22,6 +22,7 @@ Your responsibilities:
    - Add JSDoc comments for every function.
    - Handle errors with try/catch where needed.
    - Keep functions small and single-purpose.
+   - STRICT: Do NOT wrap the code in markdown code blocks (\`\`\`). Output the raw code directly between the --- FILE --- and --- END FILE --- markers.
 
 Output format:
 IMPLEMENTATION
@@ -30,6 +31,10 @@ IMPLEMENTATION
 --- FILE: <path/filename.ext> ---
 <full code for that file>
 --- END FILE ---
+
+--- EXECUTION COMMAND ---
+<the exact terminal command needed to test/run this code (e.g., node test.js or npm test)>
+--- END COMMAND ---
 
 Write ALL necessary code. Do not leave TODOs or placeholders.
 If the task is language-agnostic, default to Node.js / JavaScript.
