@@ -1,6 +1,6 @@
 # STARKNET AI — Multi-Agent AI System
 
-> A production-ready CLI-based multi-agent AI system where Avengers collaborate to solve any task — powered by Groq API + LLaMA 3 70B.
+> A production-ready CLI-based multi-agent AI system where Avengers collaborate to solve any task — powered by Groq API + LLaMA 3.3 70B.
 
 ---
 
@@ -74,8 +74,8 @@ starknet-ai/
 ### 1. Clone & Install
 
 ```bash
-git clone <repo-url>
-cd starknet-ai
+git clone https://github.com/Harsh-Pathak3601/Starknet-AI.git
+cd Starknet-AI
 npm install
 ```
 
@@ -122,7 +122,7 @@ The system will:
 | Variable      | Required | Default          | Description                      |
 |---------------|----------|------------------|----------------------------------|
 | `GROQ_API_KEY`| ✅ Yes   | —                | Your Groq API key                |
-| `GROQ_MODEL`  | No       | `llama3-70b-8192`| Groq model to use                |
+| `GROQ_MODEL`  | No       | `llama-3.3-70b-versatile`| Groq model to use                |
 | `MAX_TOKENS`  | No       | `2048`           | Max tokens per agent response    |
 | `TEMPERATURE` | No       | `0.7`            | Model creativity (0.0–1.0)       |
 | `DEBUG`       | No       | `false`          | Set `true` for full error stacks |
@@ -166,7 +166,7 @@ Each report contains the structured output of all 6 agents, timestamped and labe
 - **ES Modules (`"type": "module"`)** — modern, clean import/export syntax
 - **Separate modules per agent** — strict separation of concerns; no merged logic
 - **Shared memory via `memory.js`** — agents accumulate context without monolithic state
-- **Groq LLaMA 3 70B** — fast inference, high quality, cost-effective
+- **Groq LLaMA 3.3 70B** — fast inference, high quality, cost-effective
 - **`ora` + `chalk`** — production-quality CLI UX with live spinners and colour
 
 ---
