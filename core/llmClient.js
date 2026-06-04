@@ -16,7 +16,7 @@ if (!process.env.GROQ_API_KEY) {
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const MODEL      = process.env.GROQ_MODEL    || "llama-3.3-70b-versatile";
-const TOKENS     = parseInt(process.env.MAX_TOKENS   || "2048", 10);
+const TOKENS     = parseInt(process.env.MAX_TOKENS   || "8192", 10);
 const TEMP       = parseFloat(process.env.TEMPERATURE || "0.7");
 const MAX_RETRIES = 3;
 

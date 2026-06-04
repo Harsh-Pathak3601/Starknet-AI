@@ -1,7 +1,7 @@
 # Dependencies
 node_modules/
 
-# Environment secrets — NEVER commit this
+# Environment secrets 
 .env
 
 # Mission output reports

@@ -2,10 +2,30 @@
  * memory.js
  * Shared in-memory store for the entire multi-agent pipeline.
  * Each agent writes its output here; subsequent agents read from it.
+ *
+ * v2: Integrates with contextManager for sliding-window token safety.
  */
 
-// The memory store is a simple array of { agent, output } records
+import { buildSmartContext, getTokenStats } from "./contextManager.js";
+
+// The memory store is a simple array of { agent, output, timestamp } records
 const _store = [];
+
+// Holds a reference to Nick Fury's condense() — injected at runtime to avoid
+// circular imports (nickFury → memory → nickFury).
+let _condenser = null;
+
+/**
+ * setCondenser — registers Nick Fury's condense function so memory can
+ * trigger summarisation when the context window fills up.
+ *
+ * Call this once in orchestrator.js after importing both modules.
+ *
+ * @param {Function} fn  - Async function (store) => string.
+ */
+export function setCondenser(fn) {
+  _condenser = fn;
+}
 
 /**
  * append — records an agent's output into shared memory.
@@ -46,12 +66,23 @@ export function getByAgent(agent) {
 }
 
 /**
- * buildContext — serialises the full memory into a readable string
- * that can be injected into subsequent agent prompts.
+ * buildContext — smart context builder.
+ * Applies sliding window + optional Nick Fury condensation to stay
+ * within the LLM's token budget.
+ *
+ * @returns {Promise<string>}
+ */
+export async function buildContext() {
+  return await buildSmartContext(_store, _condenser);
+}
+
+/**
+ * buildContextSync — lightweight sync version that skips condensation.
+ * Use only when you cannot await (e.g., inside a synchronous callback).
  *
  * @returns {string}
  */
-export function buildContext() {
+export function buildContextSync() {
   if (_store.length === 0) return "No prior context.";
   return _store
     .map((r) => `[${r.agent}]:\n${r.output}`)
@@ -59,8 +90,18 @@ export function buildContext() {
 }
 
 /**
+ * getStats — returns token usage stats for the current memory store.
+ *
+ * @returns {{ used: number, limit: number, percent: number }}
+ */
+export function getStats() {
+  return getTokenStats(buildContextSync());
+}
+
+/**
  * clear — wipes the memory store (useful between sessions).
  */
 export function clear() {
   _store.length = 0;
+  _condenser    = null;
 }

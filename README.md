@@ -1,43 +1,60 @@
-# STARKNET AI — Multi-Agent AI System
+# STARKNET AI — Multi-Agent AI System (Advanced Edition)
 
-> A production-ready CLI-based multi-agent AI system where Avengers collaborate to solve any task — powered by Groq API + LLaMA 3.3 70B.
+> A production-grade CLI-based multi-agent AI system where the Elite 7 Avengers collaborate to build, test, and deploy full-stack projects — powered by Groq API + LLaMA 3.3 70B.
 
 ---
 
-## 🧠 How It Works
+## 🧠 The Evolution: "The Jarvis Era"
+
+Starknet AI has evolved from a linear pipeline into an autonomous engineering engine. It now features **Stateful Chunking**, **Smart Context Mastery**, and **Auto-Deployment** to the cloud.
+
+### 🛡️ The Elite 7 Pipeline
 
 ```
 User Task
     │
     ▼
-🏹  Hawkeye          → Scrapes latest docs via Playwright
+🏹  Hawkeye          → Web Research & Intel Gathering
     │
     ▼
-🕶️  Nick Fury        → Breaks task into mission steps
+🕶️  Nick Fury        → Mission Planning & Memory Condensation
     │
     ▼
-🦾  Iron Man         → Designs technical architecture
+🦾  Iron Man         → Full-Stack Architecture & Scaffolding
     │
     ▼
-💪  Hulk             → Writes implementation code ◄─────┐
-    │                                                 │
-    ▼                                                 │ (Auto-Healing)
-🤖  System Run       → Executes code & catches errors ──┘
+💪  Hulk             → Stateful Implementation (Chunked Mode) ◄──┐
+    │                                                           │
+    ▼                                                           │ (Auto-Healing)
+🕷️  Spider-Man       → Master Debugger & Security Auditor ──────┘
     │
     ▼
-🕷️  Spider-Man       → Debugs, fix errors & optimises
+🛡️  Captain America  → E2E Testing & QA Validation
     │
     ▼
-🛡️  Captain America  → Tests & validates correctness
+🤖  Vision           → Git Push, Vercel Deploy & Visual Audit
     │
     ▼
-🕸️  Black Widow      → Writes documentation & README
-    │
-    ▼
-📄  Final Report (console + optional .md file)
+📄  Final Mission Report & Live Production URL
 ```
 
-Each agent is a **separate module** that makes its own independent call to the **Groq API** with a unique system prompt reflecting its role.
+---
+
+## 🚀 Key Advanced Features
+
+### 1. 🏗️ Stateful Chunking (Hulk v2)
+Building a 20-file project? No problem. Hulk now operates in **Chunked Mode**, writing one file at a time. This prevents output token cutoffs and ensures every line of code is production-ready.
+
+### 2. 🧠 Context Mastery (Nick Fury v2)
+Never hit a "Token Limit Exceeded" error again.
+- **Sliding Window**: Automatically drops the least relevant old context.
+- **Memory Condensation**: Nick Fury "garbage collects" and summarizes mission logs when the context window fills up, keeping the "intelligence" focused.
+
+### 3. 🌐 Autonomous Infrastructure (Vision v1)
+Vision handles the "Last Mile" of development:
+- **Git Integration**: Automatically commits and pushes your code to GitHub.
+- **Auto-Deploy**: Deploys the generated workspace to **Vercel** production.
+- **Visual Audit**: Uses Playwright to screenshot the live site and perform a UX/Visual quality audit.
 
 ---
 
@@ -47,60 +64,49 @@ Each agent is a **separate module** that makes its own independent call to the *
 starknet-ai/
 │
 ├── agents/
-│   ├── hawkeye.js         ← Web scout & research agent (Playwright)
-│   ├── nickFury.js        ← Mission planner / orchestrator agent
-│   ├── ironMan.js         ← Architecture & system design agent
-│   ├── hulk.js            ← Code implementation agent
-│   ├── spiderMan.js       ← Debugger & optimiser agent
-│   ├── captainAmerica.js  ← Tester & validator agent
-│   └── blackWidow.js      ← Documenter & README agent
+│   ├── hawkeye.js         ← Research + Intel (Playwright)
+│   ├── nickFury.js        ← Orchestrator + Memory Condenser
+│   ├── ironMan.js         ← Architect & System Design
+│   ├── hulk.js            ← Engineer (Stateful Chunking)
+│   ├── spiderMan.js       ← Debugger & Auto-Healing
+│   ├── captainAmerica.js  ← Tester & QA Specialist
+│   └── vision.js          ← CI/CD, Deploy & Visual Auditor
 │
 ├── core/
-│   ├── orchestrator.js    ← Chains all agents in sequence
-│   ├── memory.js          ← Shared in-memory context store
-│   └── groqClient.js      ← Reusable Groq API client
-│
-├── cli/
-│   └── index.js           ← CLI entry point (inquirer + chalk)
+│   ├── orchestrator.js    ← The "Brain" (Wires all 7 agents)
+│   ├── memory.js          ← Token-safe shared store
+│   ├── contextManager.js  ← Sliding window & summarization logic
+│   └── llmClient.js       ← Groq API client (with auto-retry)
 │
 ├── tools/
-│   ├── runCommand.js      ← Shell command executor (child_process)
-│   └── fileSystem.js      ← File read/write/delete utilities
+│   ├── gitTool.js         ← Git operations (init, add, commit, push)
+│   ├── deployTool.js      ← Vercel deployment wrapper
+│   ├── runCommand.js      ← Shell executor (child_process)
+│   └── fileSystem.js      ← File read/write utilities
 │
-├── output/                ← Auto-created; stores mission reports
-├── .env.example           ← Environment variable template
-├── .env                   ← Your secrets (never commit this)
-├── package.json
-└── README.md
+└── .env                   ← Your mission secrets
 ```
 
 ---
 
 ## ⚙️ Setup
 
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/Harsh-Pathak3601/Starknet-AI.git
-cd Starknet-AI
-npm install
-```
-
-### 2. Configure Environment
+### 1. Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and fill in your Groq API key:
+Open `.env` and fill in the required keys:
 
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY=your_key
+VERCEL_TOKEN=your_token_for_auto_deploy
+CHUNKED_MODE=true           # Recommended for full-stack projects
+CONTEXT_TOKEN_LIMIT=30000   # Optimized for Free Tier
 ```
 
-> Get your free API key at **https://console.groq.com**
-
-### 3. Run
+### 2. Run Mission
 
 ```bash
 npm start
@@ -108,84 +114,32 @@ npm start
 
 ---
 
-## 🚀 Usage
+## 🔧 Advanced Configurations
 
-Once running, you'll see the STARKNET AI banner. Enter any task:
-
-```
-🎯  Enter your task for the Avengers:
-> Build a REST API for a todo app with Node.js and MongoDB
-```
-
-The system will:
-1. Display real-time spinner for each agent step (now 7 steps!)
-2. Print all 7 agent outputs to the console
-3. Optionally save a full `.md` report to the `output/` folder
-
----
-
-## 🔧 Environment Variables
-
-| Variable      | Required | Default          | Description                      |
-|---------------|----------|------------------|----------------------------------|
-| `GROQ_API_KEY`| ✅ Yes   | —                | Your Groq API key                |
-| `GROQ_MODEL`  | No       | `llama-3.3-70b-versatile`| Groq model to use                |
-| `MAX_TOKENS`  | No       | `2048`           | Max tokens per agent response    |
-| `TEMPERATURE` | No       | `0.7`            | Model creativity (0.0–1.0)       |
-| `DEBUG`       | No       | `false`          | Set `true` for full error stacks |
-
----
-
-## 🧩 Module Reference
-
-| Module                  | Role                                             |
-|-------------------------|--------------------------------------------------|
-| `core/groqClient.js`    | Single reusable function for all Groq API calls  |
-| `core/memory.js`        | Shared memory store (append / read / buildContext) |
-| `core/orchestrator.js`  | Chains all agents; manages data flow             |
-| `agents/hawkeye.js`     | Web scout, researches latest API docs using Playwright |
-| `agents/nickFury.js`    | Mission breakdown & step assignment              |
-| `agents/ironMan.js`     | Technical architecture & module design           |
-| `agents/hulk.js`        | Implementation + **Execution Command Suggester**  |
-| `agents/spiderMan.js`   | **Auto-Healing**: Fixes stack traces from crashes |
-| `agents/captainAmerica.js` | Test case generation & PASS/FAIL verdicts     |
-| `agents/blackWidow.js`  | Final Markdown documentation                     |
-| `tools/runCommand.js`   | Shell command execution via `child_process`      |
-| `tools/fileSystem.js`   | File read / write / append / delete / list       |
-| `cli/index.js`          | Interactive CLI with prompts and styled output   |
-
----
-
-## 📤 Output
-
-All mission reports are saved to the `output/` directory as Markdown files:
-
-```
-output/
-└── mission-2026-04-21T12-00-00-000Z.md
-```
-
-Each report contains the structured output of all 7 agents, timestamped and labelled.
+| Variable | Recommended | Description |
+| :--- | :--- | :--- |
+| `CHUNKED_MODE` | `true` | Writes files one-by-one (safer for big projects). |
+| `CONTEXT_TOKEN_LIMIT` | `30000` | Triggers Nick Fury to condense context earlier. |
+| `MAX_TOKENS` | `4096` | Max tokens per file chunk. |
+| `VERCEL_TOKEN` | — | Required for Vision's deployment step. |
 
 ---
 
 ## 🛡️ Architecture Decisions
 
-- **ES Modules (`"type": "module"`)** — modern, clean import/export syntax
-- **Separate modules per agent** — strict separation of concerns; no merged logic
-- **Shared memory via `memory.js`** — agents accumulate context without monolithic state
-- **Playwright Integration** — allows the scout agent to read up-to-date docs during runs
-- **Auto-Healing Execution Loop** — captures runtime errors from `child_process` and feeds them back to agents for self-correction.
-- **Groq LLaMA 3.3 70B** — fast inference, high quality, cost-effective
-- **`ora` + `chalk`** — production-quality CLI UX with live spinners and colour
+- **ReAct-Lite Engine** — Orchestrator manages state dynamically using a centralized context manager.
+- **Stateful Persistence** — All agent outputs are tracked; Nick Fury summarizes them to preserve "Strategic Intent" over long sessions.
+- **Model Context Protocol (MCP) Ready** — Tools are modularized to eventually support full MCP integration.
+- **Headless UI Audits** — Vision "sees" the web using Playwright + LLM vision proxies.
 
 ---
 
-## 🚫 Limitations
+## 📜 License
 
-- Agents run **sequentially** (not in parallel) — by design, to ensure each builds on the previous
-- Context window: Each agent receives the outputs of prior agents, which may hit token limits on very long tasks
-- No persistent storage between sessions (memory is reset each run)
+MIT — Built by STARKNET AI Multi-Agent System.
+
+> *"The future isn't something we wait for, it's something we build." — Tony Stark*
+etween sessions (memory is reset each run)
 
 ---
 

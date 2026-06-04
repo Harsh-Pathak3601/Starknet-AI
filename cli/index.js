@@ -33,20 +33,21 @@ function printBanner() {
   `);
   console.log(banner);
   console.log(
-    chalk.dim("  Multi-Agent AI System  •  Powered by Groq LLaMA 3 70B\n")
+    chalk.dim("  Avengers Multi-Agent AI System  •  Powered by Groq LLaMA 3 70B\n")
   );
 }
 
 // ─── Agent label helper ───────────────────────────────────────────────────────
 
 const AGENT_STYLES = {
-  "Hawkeye": { emoji: "🏹", color: chalk.bold.cyan },
-  "Nick Fury": { emoji: "🕶️", color: chalk.bold.red },
-  "Iron Man": { emoji: "🦾", color: chalk.bold.yellow },
-  "Hulk": { emoji: "💪", color: chalk.bold.green },
-  "Spider-Man": { emoji: "🕷️", color: chalk.bold.hex("#FF4500") },
+  "Hawkeye":         { emoji: "🏹", color: chalk.bold.cyan },
+  "Nick Fury":       { emoji: "🕶️", color: chalk.bold.red },
+  "Iron Man":        { emoji: "🦾", color: chalk.bold.yellow },
+  "Hulk":            { emoji: "💪", color: chalk.bold.green },
+  "Spider-Man":      { emoji: "🕷️", color: chalk.bold.hex("#FF4500") },
   "Captain America": { emoji: "🛡️", color: chalk.bold.blueBright },
-  "Black Widow": { emoji: "🕸️", color: chalk.bold.magenta },
+  "Vision":          { emoji: "🤖", color: chalk.bold.hex("#A855F7") }, // Purple — the Synthezoid
+  "System":          { emoji: "⚙️",  color: chalk.dim },
 };
 
 function agentHeader(name) {
@@ -135,7 +136,7 @@ async function main() {
         const actionText = msg ? msg : "is working...";
         spinner.start(
           chalk.dim(`  [${stepIndex + 1}/7] `) +
-          chalk.bold(`${emoji}  ${agentName} ${actionText}`)
+          chalk.bold(`${emoji}  ${agentName} — ${actionText}`)
         );
       });
 
